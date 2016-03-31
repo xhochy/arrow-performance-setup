@@ -1,0 +1,11 @@
+.asv-machine.json 
+{
+    "debian-jessie": {
+        "arch": "x86_64", 
+        "cpu": "Intel(R) Core(TM) i7 CPU       L 640  @ 2.13GHz", 
+        "machine": "debian-jessie", 
+        "os": "Linux 3.16.0-4-amd64", 
+        "ram": "2093348"
+    }, 
+    "version": 1
+}

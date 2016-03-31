@@ -1,0 +1,49 @@
+---
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - apt:
+        cache_valid_time=3600
+        update_cache=yes
+        upgrade=full
+    - apt:
+        state=latest
+        name={{ item }}
+      with_items:
+          - build-essential
+          - git-core
+          - cmake
+          - libboost-all-dev
+          - libssl-dev
+          - bison
+          - flex
+          - python-pip
+          - virtualenv
+          - python-dev
+- hosts: all
+  tasks:
+    - git:
+        repo=https://github.com/apache/parquet-cpp.git
+        dest=parquet-cpp
+    - git:
+        repo=https://github.com/apache/arrow.git
+        dest=arrow
+    - copy:
+        src=../{{ item }}
+        dest=~/{{ item }}
+        mode=0700
+      with_items:
+          - build.sh
+          - bench-cxx.sh
+          - bench-py-dev.sh
+    - file:
+        path=arrow/python/.asv/results/debian-jessie
+        state=directory
+        recurse=yes
+    - copy:
+        src=machine.json
+        dest=arrow/python/.asv/results/debian-jessie/machine.json
+    - copy:
+        src=asv-machine.json
+        dest=.asv-machine.json
